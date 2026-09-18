@@ -1,0 +1,656 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{vietnam}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem*{example}{Ví dụ}
+\theoremstyle{remark}
+\newtheorem*{remark}{Chú ý}
+\geometry{a4paper, margin=2.5cm}
+
+\title{\textbf{KHAI TRIỂN TAYLOR: LÝ THUYẾT, CHỨNG MINH VÀ ỨNG DỤNG}}
+\author{\textbf{Quốc Mai}}
+\date{Tháng 9 năm 2026}
+
+\newtheorem{theorem}{Định lý}
+\newtheorem{definition}{Định nghĩa}
+
+\begin{document}
+
+\maketitle
+
+\section{Mở đầu}
+
+Trong giải tích toán học, việc xấp xỉ các hàm phức tạp (như hàm lượng giác, hàm mũ, hàm lôgarit) bằng các hàm đơn giản hơn là một nhu cầu cực kỳ quan trọng. Các hàm đa thức là đối tượng lý tưởng nhất cho việc tính toán vì chúng chỉ bao gồm các phép tính đại số cơ bản: cộng, trừ, nhân và nâng lên lũy thừa nguyên dương.\\
+Công cụ mạnh mẽ và phổ biến nhất để thực hiện công việc này chính là \textbf{Khai triển Taylor} (được đặt theo tên nhà toán học người Anh Brook Taylor). Bằng cách sử dụng thông tin về đạo hàm của hàm số tại một điểm cụ thể, chuỗi Taylor cho phép biểu diễn (hoặc xấp xỉ) một hàm số khả vi vô hạn dưới dạng một chuỗi lũy thừa.\\
+Khi điểm xấp xỉ được chọn tại gốc tọa độ ($a = 0$), khai triển Taylor trở thành một trường hợp đặc biệt quan trọng gọi là \textbf{Khai triển Maclaurin} (đặt theo tên nhà toán học Colin Maclaurin).
+\section{Nội dung khai triển Taylor}
+\subsection{Đa thức Taylor và phần dư Lagrange}
+\begin{theorem}[Taylor's Theorem -- Rudin]
+Giả sử $f$ là một hàm thực trên $[a, b]$, $n$ là một số nguyên dương, $f^{(n-1)}$ liên tục trên $[a, b]$, và $f^{(n)}(t)$ tồn tại với mọi $t \in (a, b)$. Let $\alpha, \beta$ là hai điểm phân biệt thuộc $[a, b]$, và định nghĩa:
+\begin{equation}
+P(t) = \sum_{k=0}^{n-1} \frac{f^{(k)}(\alpha)}{k!} (t - \alpha)^k.
+\end{equation}
+Khi đó tồn tại một điểm $x$ nằm giữa $\alpha$ và $\beta$ sao cho:
+\begin{equation}
+f(\beta) = P(\beta) + \frac{f^{(n)}(x)}{n!} (\beta - \alpha)^n.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Đặt $M$ là số được xác định bởi:
+\begin{equation}
+f(\beta) = P(\beta) + M(\beta - \alpha)^n,
+\end{equation}
+và xét hàm phụ:
+\begin{equation}
+g(t) = f(t) - P(t) - M(t - \alpha)^n \quad (a \le t \le b).
+\end{equation}
+Ta cần chứng minh rằng $n!M = f^{(n)}(x)$ với một điểm $x$ nào đó nằm giữa $\alpha$ và $\beta$. 
+
+Lấy đạo hàm cấp $n$ theo biến $t$, ta có:
+\begin{equation}
+g^{(n)}(t) = f^{(n)}(t) - n!M \quad (a < t < b).
+\end{equation}
+Do đó, bài toán quy về việc chứng minh $g^{(n)}(x) = 0$ với một điểm $x$ nằm giữa $\alpha$ và $\beta$.
+
+Vì $P^{(k)}(\alpha) = f^{(k)}(\alpha)$ với mọi $k = 0, \dots, n-1$, ta suy ra:
+\begin{equation}
+g(\alpha) = g'(\alpha) = \dots = g^{(n-1)}(\alpha) = 0.
+\end{equation}
+
+Mặt khác, cách chọn $M$ cho ta $g(\beta) = 0$. Áp dụng định lý giá trị trung bình (định lý Rolle), do $g(\alpha) = g(\beta) = 0$ nên tồn tại $x_1$ nằm giữa $\alpha$ và $\beta$ sao cho $g'(x_1) = 0$. 
+
+Vì $g'(\alpha) = 0$ và $g'(x_1) = 0$, ta tiếp tục kết luận tương tự rằng $g''(x_2) = 0$ với $x_2$ nằm giữa $\alpha$ và $x_1$. Sau $n$ bước, ta đi đến kết luận rằng:
+\[
+g^{(n)}(x_n) = 0
+\]
+với $x_n$ nào đó nằm giữa $\alpha$ và $x_{n-1}$, tức là nằm giữa $\alpha$ và $\beta$. Đặt $x = x_n$, ta có $g^{(n)}(x) = 0$, suy ra $n!M = f^{(n)}(x)$ hay $M = \frac{f^{(n)}(x)}{n!}$. Chứng minh hoàn tất.
+\end{proof}
+\begin{example}
+Xét hàm số $f(t) = e^t$ trên $[0, 1]$. Chọn $\alpha = 0, \beta = 1$ và $n = 3$.
+
+\begin{itemize}
+    \item Đạo hàm các cấp: $f'(t) = f''(t) = f'''(t) = e^t$.
+    \item Giá trị tại $\alpha = 0$: $f(0) = f'(0) = f''(0) = e^0 = 1$.
+    \item Đa thức Taylor bậc $n - 1 = 2$ tại $\alpha = 0$:
+    \[
+    P(t) = f(0) + f'(0)t + \frac{f''(0)}{2!}t^2 = 1 + t + \frac{t^2}{2}
+    \]
+\end{itemize}
+
+Theo định lý Taylor của Rudin, tồn tại $x \in (0, 1)$ sao cho:
+\[
+f(1) = P(1) + \frac{f'''(x)}{3!}(1 - 0)^3 \implies e = \left(1 + 1 + \frac{1}{2}\right) + \frac{e^x}{6} = 2.5 + \frac{e^x}{6}
+\]
+
+Suy ra:
+\[
+e^x = 6(e - 2.5) \implies x = \ln\left(6e - 15\right) \approx 0.2697 \in (0, 1)
+\]
+\end{example}
+\begin{remark}
+Định lý có một cách phát biểu thông dụng hơn như sau:
+
+Cho hàm số $f$ khả vi cấp $n + 1$ liên tục trên đoạn $[a, b]$. Lấy điểm $x_0 \in [a, b]$ bất kỳ. Khi đó, với mọi $x \in [a, b]$, tồn tại một điểm $x^*$ nằm giữa $x_0$ và $x$ sao cho:
+\[
+f(x) = f(x_0) + f'(x_0)(x - x_0) + \frac{f''(x_0)}{2!}(x - x_0)^2 + \dots + \frac{f^{(n)}(x_0)}{n!}(x - x_0)^n + R_n(x)
+\]
+Trong đó, đại lượng:
+\[
+R_n(x) = \frac{f^{(n+1)}(x^*)}{(n+1)!}(x - x_0)^{n+1}
+\]
+được gọi là \textbf{số hạng dư dạng Lagrange}. Một cách trực quan, ta có thể thấy phần dư Lagrange sẽ càng nhỏ nếu $x$ càng gần $x_0$, do đó ta có thể xấp xỉ giá trị của hàm số $f(x_0)$ bằng một đa thức $P(x)$ đơn giản hơn với $x$ gần với $x_0$.
+\end{remark}
+\subsection{Chuỗi Taylor}
+Đối với hàm số khả vi cấp hữu hạn $n$, chúng ta đã có công cụ \textbf{Đa thức Taylor} để tính xấp xỉ gần đúng giá trị của các hàm phức tạp bằng đa thức. Tuy nhiên, câu hỏi đặt ra là, liệu chúng ta có thể mở rộng đa thức này thành một chuỗi vô hạn không? Nghĩa là, nếu ta có một hàm số $f$ khả vi vô hạn lần tại điểm $x_0$ nào đó, thì liệu tổng vô hạn 
+\begin{equation}
+    \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!} (x - x_0)^n
+\end{equation}
+có bằng giá trị của $f(x_0)$ không? Các nhà toán học  đã nghĩ ra phương pháp rất hay, đó là đồng nhất hệ số với giả định hàm $f(x)$ có thể khai triển được thành chuỗi lũy thừa và lấy đạo hàm cấp cao tại điểm $x=x_0$
+
+Giả sử $f(x)$ là một hàm số khả vi vô hạn tại điểm $x = a$ và có thể biểu diễn dưới dạng chuỗi lũy thừa:
+\[
+f(x) = c_0 + c_1(x-x_0) + c_2(x-x_0)^2 + c_3(x-x_0)^3 + \dots + c_n(x-x_0)^n + \dots
+\]
+
+
+
+\begin{itemize}
+    \item \textbf{Tính $c_0$:} Thay $x = a$ trực tiếp vào công thức $f(x)$:
+    \[
+    f(a) = c_0 + 0 + 0 + \dots \implies c_0 = f(x_0)
+    \]
+
+    \item \textbf{Tính $c_1$:} Lấy đạo hàm cấp 1 theo $x$:
+    \[
+    f'(x) = c_1 + 2c_2(x-x_0) + 3c_3(x-x_0)^2 + 4c_4(x-x_0)^3 + \dots
+    \]
+    Thay $x = a$:
+    \[
+    f'(x_0) = c_1 \implies c_1 = \frac{f'(x_0)}{1!}
+    \]
+
+    \item \textbf{Tính $c_2$:} Lấy đạo hàm cấp 2 theo $x$:
+    \[
+    f''(x) = 2c_2 + 3 \cdot 2 c_3(x-a) + 4 \cdot 3 c_4(x-a)^2 + \dots
+    \]
+    Thay $x = x_0$:
+    \[
+    f''(x_0) = 2c_2 \implies c_2 = \frac{f''(x_0)}{2!}
+    \]
+
+    \item \textbf{Tính $c_3$:} Lấy đạo hàm cấp 3 theo $x$:
+    \[
+    f'''(x) = 3 \cdot 2 \cdot 1 c_3 + 4 \cdot 3 \cdot 2 c_4(x-x_0) + \dots
+    \]
+    Thay $x = a$:
+    \[
+    f'''(x_0) = 3! \cdot c_3 \implies c_3 = \frac{f'''(x_0)}{3!}
+    \]
+\end{itemize}
+
+
+Bằng phương pháp quy nạp toán học, đạo hàm cấp $n$ của $f(x)$ là:
+\[
+f^{(n)}(x) = n! \cdot c_n + (n+1)n\dots 2 \cdot c_{n+1}(x-x_0) + \dots
+\]
+Khi thay $x = x_0$, tất cả các số hạng chứa $(x-x_0)$ đều triệt tiêu về $0$:
+\[
+f^{(n)}(x_0) = n! \cdot c_n \implies c_n = \frac{f^{(n)}(x_0)}{n!}
+\]
+
+
+Thay $c_n$ ngược lại vào chuỗi lũy thừa ban đầu, ta thu được công thức chuỗi Taylor tổng quát:
+\[
+f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!} (x-x_0)^n
+\]
+
+Đối với chuỗi Maclaurin (trường hợp đặc biệt khi $x_0 = 0$):
+\[
+f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n
+\]
+
+
+Để chứng minh chặt chẽ rằng chuỗi này thực sự bằng $f(x)$, người ta dùng \textbf{Công thức Taylor với số dư Lagrange}:
+\[
+f(x) = P_n(x) + R_n(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!} (x-x_0)^k + \frac{f^{(n+1)}(c)}{(n+1)!} (x-x_0)^{n+1}
+\]
+\textit{(với $c$ nằm giữa $a$ và $x$)}
+
+Chuỗi Taylor hội tụ và bằng đúng $f(x)$ khi và chỉ khi:
+\[
+\lim_{n \to \infty} R_n(x) = 0
+\]
+Như vậy là ta không chỉ có thể xấp xỉ một hàm khả vi (ở đây ta quan tâm đến hàm khả vi vô hạn lần) bằng đa thức bậc $n$ hữu hạn mà ta có thể mở rộng thành một đa thức vô hạn với các hệ số giống như là hệ số của đa thức Taylor nếu như phần dư Largrange thật sự dần về $0$.
+\begin{example}
+    
+ Hàm $e^x$ tại $a=0$. Ta sẽ chứng minh $R_n(x)$ dần về 0 với mọi $x$. Thật vậy, sử dụng khai triển Taylor cho $f$ tại $x_0=0$, ta có
+ \begin{equation}
+     f(x) = P_n(x) + R_n(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!} (x-x_0)^k + \frac{f^{(n+1)}(c)}{(n+1)!} (x-x_0)^{n+1}
+ \end{equation} với $c$ là điểm nào đó nằm giữa $x$ và $0$.
+ Dễ thấy, $|f^{(n+1)}(c)| = e^c \le e^{|x|}$ (bị chặn) và $\lim_{n \to \infty} \frac{|x|^{n+1}}{(n+1)!} = 0$, ta có $R_n(x) \to 0$ với mọi $x$, chứng minh khai triển $e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}$ đúng với mọi $x$.
+\end{example}
+Không phải hàm số nào cũng có thể khai triển thành chuỗi Taylor với miền hội tụ của chuỗi là toàn bộ tập số thực $\mathbb{R}$. Dưới đây là một ví dụ khác
+\begin{example}
+Xét hàm số $f(x) = \frac{1}{1-x}$ xác định trên $\mathbb{R} \setminus \{1\}$. Ta xem xét khả năng khai triển hàm số này thành chuỗi Maclaurin (chuỗi Taylor tại $x_0 = 0$), đồng thời đánh giá việc sử dụng \textbf{phần dư Lagrange} để chứng minh sự hội tụ của chuỗi về $f(x)$ trên miền $|x| < 1$.
+
+Xét các đạo hàm cấp cao của $f(x) = (1-x)^{-1}$ tại điểm $x_0 = 0$:
+\begin{align*}
+f'(x) &= 1 \cdot (1-x)^{-2} &\implies f'(0) &= 1! = 1 \\
+f''(x) &= 2 \cdot 1 \cdot (1-x)^{-3} &\implies f''(0) &= 2! = 2 \\
+f'''(x) &= 3 \cdot 2 \cdot 1 \cdot (1-x)^{-4} &\implies f'''(0) &= 3! = 6 \\
+&\;\;\vdots &&\;\;\vdots \\
+f^{(k)}(x) &= k! (1-x)^{-(k+1)} &\implies f^{(k)}(0) &= k!
+\end{align*}
+
+Công thức chuỗi Maclaurin tổng quát có dạng:
+\begin{equation}
+f(x) = \sum_{k=0}^{\infty} \frac{f^{(k)}(0)}{k!} x^k
+\end{equation}
+
+Thay các hệ số $f^{(k)}(0) = k!$ vào công thức (1), ta thu được:
+\begin{equation}
+\sum_{k=0}^{\infty} \frac{k!}{k!} x^k = \sum_{k=0}^{\infty} x^k = 1 + x + x^2 + x^3 + \dots
+\end{equation}
+
+
+Để chứng minh chặt chẽ chuỗi Taylor hội tụ và bằng $f(x)$, ta cần chỉ ra rằng phần dư $R_n(x) \to 0$ khi $n \to \infty$. 
+
+Theo công thức phần dư Lagrange:
+\begin{equation}
+R_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
+\end{equation}
+với $c$ là một điểm nằm giữa $0$ và $x$.
+
+Thay đạo hàm cấp $(n+1)$ vào (3):
+\begin{equation}
+R_n(x) = \frac{(n+1)! (1-c)^{-(n+2)}}{(n+1)!} x^{n+1} = \frac{1}{1-c} \left( \frac{x}{1-c} \right)^{n+1}
+\end{equation}
+
+
+\begin{enumerate}
+    \item \textbf{Trường hợp $0 < x < 1$:} Điểm $c \in (0, x)$ nên $0 < 1-x < 1-c < 1$. Do đó:
+    \[
+    \left| \frac{x}{1-c} \right| < \frac{x}{1-x}
+    \]
+    Nếu $x < \frac{1}{2}$ thì $\frac{x}{1-x} < 1$, ta dễ dàng suy ra $R_n(x) \to 0$. Tuy nhiên, khi $\frac{1}{2} \le x < 1$, đại lượng $\frac{x}{1-c}$ có thể lớn hơn $1$, và vì điểm $c$ biến thiên theo $n$, phần dư Lagrange \textbf{không đủ mạnh} để khẳng định $R_n(x) \to 0$.
+    \item \textbf{Trường hợp $-1 < x < 0$:} Điểm $c \in (x, 0)$, đánh giá tương tự cũng làm đại lượng $\frac{x}{1-c}$ bị mất kiểm soát.
+\end{enumerate}
+
+\textbf{Kết luận:} Phần dư Lagrange không tối ưu và gặp bế tắc khi chứng minh sự hội tụ trên toàn bộ khoảng $(-1, 1)$. Để khắc phục , người ta bắt buộc phải dùng đến cách khác.
+Thay vì dùng phần dư Lagrange, phương pháp đại số dựa trên tổng phần ($S_n$) mang tính trực tiếp và chặt chẽ hơn.
+
+Xét tổng phần thứ $n$ của cấp số nhân:
+\begin{equation}
+S_n(x) = 1 + x + x^2 + \dots + x^n = \frac{1 - x^{n+1}}{1 - x} \quad (x \neq 1)
+\end{equation}
+
+Phần dư thực sự giữa hàm số $f(x)$ và tổng phần $S_n(x)$ là:
+\begin{equation}
+R_n(x) = f(x) - S_n(x) = \frac{1}{1-x} - \frac{1 - x^{n+1}}{1 - x} = \frac{x^{n+1}}{1-x}
+\end{equation}
+
+Lấy giới hạn của phần dư khi $n \to \infty$:
+\begin{equation}
+\lim_{n \to \infty} R_n(x) = \lim_{n \to \infty} \frac{x^{n+1}}{1-x} = 0 \iff |x| < 1
+\end{equation}
+
+
+\end{example}
+Ví dụ trên đã cho ta thấy rằng không phải hàm khả vi vô hạn nào cũng có thể biểu diễn thành chuỗi Taylor với miền hội tụ trên toàn bộ $\mathbb{R}$. Vậy thì liệu có hàm số nào khả vi vô hạn nhưng chuỗi Taylor của nó tại một điểm $x_0$ nào đó vẫn hội tụ nhưng không hội tụ về $f(x)$ không? Cùng xem xét ví dụ sau
+\begin{example}
+    Xét hàm số $f: \mathbb{R} \to \mathbb{R}$ được xác định bởi:
+$$f(x) = \begin{cases} 
+e^{-1/x^2} & \text{khi } x \neq 0 \\ 
+0 & \text{khi } x = 0 
+\end{cases}$$
+\textbf{Lý do Chuỗi Taylor tại $x_0 = 0$ không hội tụ về $f(x)$ trên lân cận của $0$:}
+
+\begin{enumerate}
+    \item \textbf{Tất cả các đạo hàm tại gốc tọa độ đều bằng $0$:} \\
+    Bằng định nghĩa đạo hàm và phương pháp quy nạp, ta chứng minh được rằng hàm $f(x)$ vô cùng trơn ($f \in C^\infty$) và:
+    $$f^{(n)}(0) = 0, \quad \forall n \in \mathbb{N}$$
+    
+    \item \textbf{Chuỗi Taylor suy biến thành chuỗi không:} \\
+    Thay các giá trị đạo hàm $f^{(n)}(0) = 0$ vào công thức chuỗi Taylor (Chuỗi Maclaurin) tại $x_0 = 0$, ta thu được:
+    $$T(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n = \sum_{n=0}^{\infty} 0 \cdot x^n = 0, \quad \forall x \in \mathbb{R}$$
+    
+    \item \textbf{Sự sai khác giữa chuỗi Taylor và hàm gốc (Phần dư Lagrange không tiến về $0$):} \\
+    Theo công thức Taylor với phần dư Lagrange:
+    $$f(x) = P_n(x) + R_n(x)$$
+    Vì $P_n(x) = 0$ với mọi $n$, nên phần dư Lagrange đúng bằng chính hàm số:
+    $$R_n(x) = f(x) - P_n(x) = e^{-1/x^2}$$
+    Với mọi $x \neq 0$ cố định, ta có:
+    $$\lim_{n \to \infty} R_n(x) = \lim_{n \to \infty} e^{-1/x^2} = e^{-1/x^2} \neq 0$$
+    Do $\lim_{n \to \infty} R_n(x) \neq 0$ với mọi $x \neq 0$, chuỗi Taylor $T(x) = 0$ không bao giờ hội tụ về $f(x)$ trên bất kỳ lân cận nào của $0$ (trừ chính điểm $x = 0$).
+\end{enumerate}
+
+\textbf{Kết luận:} $f(x)$ là ví dụ điển hình về một hàm vô cùng trơn ($C^\infty$) nhưng \textbf{không phân tích được thành chuỗi Taylor} (non-analytic) tại $x_0 = 0$.
+\end{example}
+Như vậy, thông qua ba ví dụ trên, chúng ta đã có một cái nhìn sâu sắc hơn về các hàm khả vi vô hạn lần. Nếu đã học qua giải tích phức, chúng ta đều một lần thấy hàm số ở ví dụ 3. Đó là hàm chỉnh hình nhưng không giải tích tại $x=0$ (tức là nó khả vi nhưng không thể biểu diễn thành chuỗi vô hạn). Đó là sự khác biệt giữa giải tích thực và giải tích phức khi trong giải tích phức, khái niệm hàm chỉnh hình và hàm giải tích là một.
+\subsection{Khai triển Maclaurin của một số hàm sơ cấp thông dụng}
+
+Khi $a = 0$, công thức Taylor đơn giản hóa thành khai triển Maclaurin:
+\begin{equation}
+f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + \dots
+\end{equation}
+Một số khai triển Maclaurin cơ bản thường gặp:
+\begin{enumerate}
+    \item \textbf{Hàm mũ} 
+    \begin{equation}
+    e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \dots \quad (\forall x \in \mathbb{R})
+    \end{equation}
+    
+    \item \textbf{Hàm sin}
+    \begin{equation}
+    \sin x = \sum_{n=0}^{\infty} \frac{(-1)^n}{(2n+1)!} x^{2n+1} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \dots \quad (\forall x \in \mathbb{R})
+    \end{equation}
+    
+    \item \textbf{Hàm cos}
+    \begin{equation}
+    \cos x = \sum_{n=0}^{\infty} \frac{(-1)^n}{(2n)!} x^{2n} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \dots \quad (\forall x \in \mathbb{R})
+    \end{equation}
+    
+    \item \textbf{Chuỗi hình học} ($|x|<1$)
+    \begin{equation}
+    \frac{1}{1 - x} = \sum_{n=0}^{\infty} x^n = 1 + x + x^2 + x^3 + \dots
+    \end{equation}
+\end{enumerate}
+\section{Một số ứng dụng}
+\subsection{Trong toán học}
+\subsubsection{Bài toán cực tiểu}
+Ở cấp 3 chúng ta đã được học rằng nếu một hàm $f$ đạt cực trị tại $x=x_0$ thì nếu $f''(x_0)>0$ thì ta có $x_0$ là một điểm cực tiểu của hàm số. Tuy nhiên, giáo viên thường yêu cầu chúng ta thừa nhận tính chất này mà không chứng minh. Giờ đây, tôi sẽ chứng minh tính chất trên bằng công cụ \textbf{Khai triển Taylor}.
+\begin{proof}.\\
+    \textbf{Bài toán:}
+Giả sử hàm số $f: (a, b) \to \mathbb{R}$ khả vi liên tục cấp 2 trên $(a, b)$ ($f \in C^2(a, b)$) và $x_0 \in (a, b)$. Nếu $f$ đạt cực trị tại $x_0$ và $f''(x_0) > 0$ thì $f$ đạt cực tiểu địa phương tại $x_0$.
+Chứng minh được thực hiện qua các bước sau:\\
+Do $f$ khả vi tại $x_0$ và đạt cực trị tại $x_0$, theo Định lý Fermat ta có:
+\begin{equation}
+    f'(x_0) = 0
+\end{equation}
+Vì $f''(x_0) > 0$ và hàm số $f''$ liên tục tại $x_0$, theo tính chất giữ dấu của hàm liên tục, tồn tại một số $\varepsilon > 0$ sao cho khoảng mở $U = (x_0 - \varepsilon, x_0 + \varepsilon) \subset (a, b)$ thỏa mãn:
+\begin{equation}
+    f''(x) > 0 \quad \forall x \in U
+\end{equation}
+Với mọi $x \in U \setminus \{x_0\}$, áp dụng khai triển Taylor cho hàm $f(x)$ tại $x_0$ đến cấp 1 với số dư dạng Lagrange, tồn tại điểm $c$ nằm giữa $x_0$ và $x$ sao cho:
+\begin{equation}
+    f(x) = f(x_0) + f'(x_0)(x - x_0) + \frac{f''(c)}{2}(x - x_0)^2
+\end{equation}
+
+Thay $f'(x_0) = 0$ vào phương trình (3), ta thu được:
+\[
+f(x) - f(x_0) = \frac{f''(c)}{2}(x - x_0)^2
+\]
+Vì $x \in U$ và $c$ nằm giữa $x$ và $x_0$, suy ra $c \in U$. Do đó, theo (2) ta có $f''(c) > 0$. 
+
+Mặt khác, với mọi $x \neq x_0$, ta luôn có $(x - x_0)^2 > 0$. Từ đó suy ra:
+\[
+f(x) - f(x_0) > 0 \implies f(x) > f(x_0) \quad \forall x \in (x_0 - \varepsilon, x_0 + \varepsilon) \setminus \{x_0\}
+\]
+Vậy $f$ đạt cực tiểu địa phương tại $x_0$ (ĐPCM).
+\end{proof}
+\subsubsection{Xấp xỉ hàm số}
+Ngoài ra, một công dụng khác của \textbf{Khai triển Taylor} là để xấp xỉ hàm số (như đã đề cập ở trên).
+Hàm số siêu việt $f(x) = e^x$ có các đạo hàm mọi cấp đều bằng $e^x$. Khai triển Taylor của $f(x)$ xung quanh điểm $x_0 = 0$ (khai triển Maclaurin) có dạng:
+
+\begin{align*}
+    e^x &= \sum_{k=0}^{\infty} \frac{f^{(k)}(0)}{k!} x^k \\
+        &= 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \dots + \frac{x^n}{n!} + R_n(x)
+\end{align*}
+Bỏ qua phần dư $R_n(x)$, ta thu được đa thức xấp xỉ bậc $n$:
+\begin{equation}
+    P_n(x) = \sum_{k=0}^{n} \frac{x^k}{k!}
+\end{equation}
+Ta có thể xấp xỉ giá trị của hàm số này bằng đa thức với sai số có thể kiểm soát được. Ta cũng có thể tính ra giá trị của hằng số $e$.\\
+Đặt $x = 1$, giá trị của số $e = e^1$ được xấp xỉ bởi dãy tổng đa thức $P_n(1)$:
+
+\begin{equation*}
+    e \approx P_n(1) = 1 + 1 + \frac{1}{2!} + \frac{1}{3!} + \dots + \frac{1}{n!}
+\end{equation*}
+Bảng dưới đây minh họa độ chính xác tăng dần khi tăng bậc khai triển $n$:
+
+\begin{table}[h]
+\centering
+\caption{Giá trị xấp xỉ và sai số khi tăng bậc khai triển $n$}
+\vspace{0.2cm}
+\begin{tabular}{c l c c}
+    \toprule
+    \textbf{Bậc ($n$)} & \textbf{Công thức $P_n(1)$} & \textbf{Giá trị xấp xỉ} & \textbf{Sai số tuyệt đối} \\
+    \midrule
+    $1$ & $1 + 1$ & $2.0000000$ & $0.7182818$ \\
+    $2$ & $1 + 1 + \frac{1}{2}$ & $2.5000000$ & $0.2182818$ \\
+    $3$ & $1 + 1 + \frac{1}{2} + \frac{1}{6}$ & $2.6666667$ & $0.0516151$ \\
+    $4$ & $1 + 1 + \frac{1}{2} + \frac{1}{6} + \frac{1}{24}$ & $2.7083333$ & $0.0099485$ \\
+    $5$ & $1 + 1 + \frac{1}{2} + \frac{1}{6} + \frac{1}{24} + \frac{1}{120}$ & $2.7166667$ & $0.0016151$ \\
+    \bottomrule
+\end{tabular}
+\end{table}
+Sai số tuyệt đối khi thay $e^x$ bằng đa thức $P_n(x)$ trên khoảng $[0, x]$ được chặn bởi phần dư Lagrange:
+\begin{equation}
+    |R_n(x)| = \left| \frac{e^c}{(n+1)!} x^{n+1} \right| \quad \text{với } c \in (0, x)
+\end{equation}
+Khi $x = 1$, do $c \in (0, 1)$ nên $e^c < e^1 < 3$. Ta có ước lượng sai số:
+\begin{equation*}
+    |R_n(1)| < \frac{3}{(n+1)!}
+\end{equation*}
+Như đã đề cập ở trên $(n+1)!$ tăng rất nhanh, sai số $|R_n(1)|$ tiến về $0$ cực kỳ nhanh khi $n \to \infty$ nên chuỗi Taylor sẽ hội tụ về đúng giá trị của $f(1)$.\\
+\subsubsection{Bài toán Basel}
+Chuỗi Taylor cũng xuất hiện trong nhiều bài toán nổi tiếng khác, một trong số đó không thể không nhắc tới bài toán Basel.Bài toán yêu cầu tính tổng chính xác của chuỗi vô hạn các bình phương nghịch đảo của các số nguyên dương:
+\begin{equation}
+    S = \sum_{n=1}^{\infty} \frac{1}{n^2} = 1 + \frac{1}{4} + \frac{1}{9} + \frac{1}{16} + \dots
+\end{equation}
+Euler đã gây kinh ngạc cho cộng đồng toán học thời bấy giờ khi chứng minh được rằng tổng này bằng một kết quả hoàn toàn bất ngờ có chứa số $\pi$:
+\[
+S = \frac{\pi^2}{6}
+\]
+Cách giải ban đầu cực kỳ sáng tạo của Euler dựa trên việc coi hàm số $\sin(x)$ như một "đa thức vô hạn cấp" thông qua \textbf{Khai triển Taylor} và so sánh các hệ số của nó với dạng phân tích thành nhân tử theo các nghiệm.\\
+Theo chuỗi Taylor tại $x = 0$, ta có:
+\[
+\sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \dots
+\]
+Chia hai vế cho $x$ ($x \neq 0$), ta thu được chuỗi Taylor cho $\frac{\sin(x)}{x}$:
+\begin{equation}
+    \frac{\sin(x)}{x} = 1 - \frac{x^2}{3!} + \frac{x^4}{5!} - \frac{x^6}{7!} + \dots = 1 - \frac{x^2}{6} + \frac{x^4}{120} - \dots
+\end{equation}
+Các nghiệm của phương trình $\sin(x) = 0$ (với $x \neq 0$) là $x = \pm \pi, \pm 2\pi, \pm 3\pi, \dots$
+ Euler lập luận rằng hàm $\frac{\sin(x)}{x}$ có thể viết thành tích vô hạn của các nhân tử chứa nghiệm tương tự như đa thức thông thường:
+\begin{align*}
+    \frac{\sin(x)}{x} &= \left(1 - \frac{x}{\pi}\right)\left(1 + \frac{x}{\pi}\right) \left(1 - \frac{x}{2\pi}\right)\left(1 + \frac{x}{2\pi}\right) \left(1 - \frac{x}{3\pi}\right)\left(1 + \frac{x}{3\pi}\right) \dots \\
+    &= \left(1 - \frac{x^2}{\pi^2}\right) \left(1 - \frac{x^2}{4\pi^2}\right) \left(1 - \frac{x^2}{9\pi^2}\right) \dots
+\end{align*}
+Tiếp theo, ta so sánh hệ số của $x^3$\\
+Khai triển tích vô hạn ở vế phải, hệ số của $x^2$ sẽ là tổng của tất cả các phần tử bậc hai:
+\begin{equation}
+    \text{Hệ số của } x^2 = -\left( \frac{1}{\pi^2} + \frac{1}{4\pi^2} + \frac{1}{9\pi^2} + \dots \right) = -\frac{1}{\pi^2} \sum_{n=1}^{\infty} \frac{1}{n^2}
+\end{equation}
+So sánh hệ số của $x^2$ thu được từ \textbf{Khai triển Taylor} ở phương trình (2) là $-\frac{1}{6}$, ta có đồng nhất thức:
+\[
+-\frac{1}{\pi^2} \sum_{n=1}^{\infty} \frac{1}{n^2} = -\frac{1}{6}
+\]
+Nhân hai vế với $-\pi^2$, ta thu được đáp án nổi tiếng của Bài toán Basel:
+\[
+\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
+\]
+\begin{note}
+\textbf{Lưu ý toán học:} Chứng minh trên của Euler ban đầu chưa thật sự chặt chẽ theo tiêu chuẩn giải tích hiện đại (việc phân tích hàm lượng giác thành tích vô hạn cần dùng Định lý Phân tích Weierstrass hoặc Hàm Zeta Riemann $\zeta(2)$). Tuy nhiên, ý tưởng dùng chuỗi Taylor làm cầu nối giữa các nghiệm và hệ số đã mở ra ngành giải tích hiện đại.
+\end{note}\\
+Đó là một vài ví dụ cho ứng dụng của \textbf{Khai triển Taylor} trong lĩnh vực Toán học. Nó còn có nhiều ứng dụng khác, tiêu biểu là chuỗi Taylor dùng để nghiên cứu các hàm giải tích trong giải tích phức.
+\subsection{Trong thực tế}
+\subsubsection{Ứng dụng Chuỗi Taylor trong Máy tính Bỏ túi}
+Vi xử lý trong các thiết bị điện tử (máy tính bỏ túi, điện thoại) bản chất chỉ có thể thực hiện 4 phép tính đại số cơ bản: \textbf{cộng, trừ, nhân và chia}. \\
+Câu hỏi đặt ra là: \textit{Làm thế nào máy tính có thể tính được giá trị của các hàm số lượng giác hay mũ như $\sin(x)$, $\cos(x)$, $e^x$ hay $\ln(x)$?}\\
+Chuỗi Taylor giúp chuyển đổi một hàm số phi tuyến phức tạp thành một đa thức vô hạn gồm toàn các phép tính nhân và cộng đơn giản.\\
+Xét khai triển Taylor của hàm $f(x) = \sin x$ tại $x_0 = 0$:
+\[
+f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + \frac{f'''(0)}{3!}x^3 + \frac{f^{(4)}(0)}{4!}x^4 + \frac{f^{(5)}(0)}{5!}x^5 + \dots
+\]
+Tính các đạo hàm tại $x_0 = 0$:
+\begin{align*}
+    f(x) &= \sin x &\implies& f(0) = 0 \\
+    f'(x) &= \cos x &\implies& f'(0) = 1 \\
+    f''(x) &= -\sin x &\implies& f''(0) = 0 \\
+    f'''(x) &= -\cos x &\implies& f'''(0) = -1 \\
+    f^{(4)}(x) &= \sin x &\implies& f^{(4)}(0) = 0 \\
+    f^{(5)}(x) &= \cos x &\implies& f^{(5)}(0) = 1
+\end{align*}
+
+Thay vào công thức, ta thu được chuỗi lũy thừa:
+\begin{equation}
+    \sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \dots
+\end{equation}\\
+Trong thực tế, khi người dùng nhập tính $\sin(0.1)$, vi xử lý chỉ cần lấy xấp xỉ 2 số hạng đầu tiên của chuỗi (1):
+\begin{equation}
+    \sin(0.1) \approx 0.1 - \frac{(0.1)^3}{6} = 0.1 - 0.00016667 = 0.09983333...
+\end{equation}
+
+\begin{note}
+\textbf{Đánh giá kết quả:}
+\begin{itemize}
+    \item Giá trị thực tế: $\sin(0.1) \approx 0.09983341...$
+    \item Sai số chỉ vào khoảng $8 \times 10^{-8}$ (cực kỳ nhỏ).
+\end{itemize}
+Nhờ chuỗi Taylor, chip máy tính chỉ mất vài nanogiây thực hiện phép nhân/chia đại số để đưa ra kết quả chính xác cao cho người dùng.
+\end{note}
+\subsubsection{Bài toán Kepler}
+Khi nghiên cứu chuyển động của các hành tinh theo quỹ đạo elip, Johannes Kepler đã thiết lập phương trình liên hệ giữa vị trí hành tinh và thời gian:
+\begin{equation}
+    M = E - e \sin E
+\end{equation}
+Trong đó:
+\begin{itemize}
+    \item $M$: Bất biến trung bình (Mean Anomaly) -- đại lượng tỉ lệ thuận với thời gian $t$.
+    \item $E$: Bất biến lệch tâm (Eccentric Anomaly) -- góc xác định vị trí thực của hành tinh trên quỹ đạo.
+    \item $e$: Độ lệch tâm của quỹ đạo elip ($0 \le e < 1$).
+\end{itemize}
+Phương trình (1) là một \textbf{phương trình siêu việt}. Ta không thể biểu diễn góc $E$ theo $M$ dưới dạng các hàm số sơ cấp bằng phép toán đại số thông thường.\\
+Để tính vị trí $E$ theo thời gian $M$, ta coi $E$ là một hàm số theo độ lệch tâm $e$, tức là $E = E(e)$, sau đó khai triển chuỗi Taylor của $E$ quanh điểm $e = 0$.\\
+Chuỗi Taylor của $E(e)$ quanh $e = 0$ có dạng:
+\begin{equation}
+    E(e) = E(0) + \left. \frac{\partial E}{\partial e} \right|_{e=0} e + \frac{1}{2!} \left. \frac{\partial^2 E}{\partial e^2} \right|_{e=0} e^2 + \frac{1}{3!} \left. \frac{\partial^3 E}{\partial e^3} \right|_{e=0} e^3 + \dots
+\end{equation}
+Lấy đạo hàm hai vế của $M = E - e \sin E$ theo biến $e$:
+\begin{itemize}
+    \item Khi $e = 0$, từ (1) ta có ngay: $E(0) = M$.
+    \item Đạo hàm cấp 1 theo $e$:
+    \[
+    0 = \frac{\partial E}{\partial e} - \sin E - e \cos E \frac{\partial E}{\partial e} \implies \frac{\partial E}{\partial e} (1 - e \cos E) = \sin E
+    \]
+    Tại $e = 0$ (khi đó $E = M$), ta thu được:
+    \[
+    \left. \frac{\partial E}{\partial e} \right|_{e=0} = \sin M
+    \]
+    \item Đạo hàm cấp 2 theo $e$:
+    \[
+    \left. \frac{\partial^2 E}{\partial e^2} \right|_{e=0} = 2 \sin M \cos M = \sin(2M)
+    \]
+\end{itemize}
+Thay các đạo hàm vừa tính vào chuỗi Taylor (2), ta thu được chuỗi lũy thừa biểu diễn $E$ theo $M$:
+\begin{equation}
+    E = M + e \sin M + \frac{e^2}{2} \sin(2M) + \frac{e^3}{8} (3\sin 3M - \sin M) + \mathcal{O}(e^4)
+\end{equation}
+Một câu hỏi lý thuyết quan trọng được đặt ra: Độ lệch tâm $e$ có thể lớn đến mức nào để chuỗi Taylor (3) vẫn hội tụ và có ý nghĩa?\\
+Khi nghiên cứu bán kính hội tụ của chuỗi Taylor cho phương trình Kepler trong mặt phẳng phức, Augustin-Louis Cauchy đã chứng minh rằng chuỗi lũy thừa theo $e$ biểu diễn $E(M)$ chỉ hội tụ với mọi $M \in \mathbb{R}$ khi và chỉ khi $e$ không vượt quá một hằng số tới hạn.
+
+Giá trị tới hạn này (ngày nay gọi là \textbf{Giới hạn Cauchy}) là nghiệm duy nhất của phương trình siêu việt:
+\begin{equation}
+    \frac{\sqrt{1 + e^2}}{e} = \exp\left( \frac{1}{\sqrt{1 + e^2}} \right)
+\end{equation}
+Giải phương trình trên thu được độ lệch tâm tối đa xấp xỉ:
+\begin{equation}
+    e_{\text{max}} \approx 0.6627434193492...
+\end{equation}
+\begin{itemize}
+    \item \textbf{Khi $e < 0.662743$:} Chuỗi Taylor của $E(M)$ hội tụ tuyệt đối và đều trên toàn bộ $\mathbb{R}$. Công thức xấp xỉ bằng chuỗi Taylor hoàn toàn có ý nghĩa toán học và sử dụng tốt (đáp ứng hầu hết các hành tinh trong Hệ Mặt Trời).
+    \item \textbf{Khi $e > 0.662743$:} Tồn tại các giá trị $M$ làm cho chuỗi Taylor bị \textbf{phân kỳ}. Đối với các thiên thể có quỹ đạo dẹt (như một số sao chổi), công thức khai triển Taylor quanh $e = 0$ thất bại hoàn toàn.
+\end{itemize}
+
+\begin{note}
+\textbf{Kết luận:} Số $e_{\text{max}} \approx 0.6627$ chính là độ lệch tâm tối đa cho phép để công thức khai triển Taylor của phương trình Kepler có ý nghĩa, đánh dấu một bước ngoặt lịch sử dẫn đến sự ra đời của lý thuyết về bán kính hội tụ trong Giải tích phức.
+\end{note}
+\subsubsection{Bài toán dao động}
+Xét một con lắc đơn có chiều dài $L$ treo tại nơi có gia tốc trọng trường $g$. Gọi $\theta(t)$ là góc lệch của dây treo so với phương thẳng đứng tại thời điểm $t$.
+
+Phương trình chuyển động chính xác của con lắc đơn là một phương trình phi tuyến:
+\begin{equation}
+    \theta''(t) + \frac{g}{L} \sin \theta(t) = 0
+\end{equation}
+Do có chứa hàm $\sin \theta$, ta không thể giải trực tiếp phương trình này bằng các hàm số thông thường.
+
+\subsubsubsection{ Trường hợp góc nhỏ ($\theta \ll 1$ rad)}
+Áp dụng khai triển Taylor cho hàm số $f(\theta) = \sin \theta$ tại điểm $\theta_0 = 0$:
+\[
+f(\theta) = f(0) + f'(0)\theta + \frac{f''(0)}{2!}\theta^2 + \frac{f'''(0)}{3!}\theta^3 + \dots
+\]
+Vì $f'(0) = \cos(0) = 1$, $f''(0) = -\sin(0) = 0$, $f'''(0) = -\cos(0) = -1$, ta có:
+\begin{equation}
+    \sin \theta = \theta - \frac{\theta^3}{6} + \frac{\theta^5}{120} - \dots
+\end{equation}
+
+Khi con lắc chỉ dao động với góc rất nhỏ (khoảng dưới $10^\circ$), giá trị của $\theta^3$ cực kỳ nhỏ và có thể bỏ qua. Ta lấy xấp xỉ cấp 1:
+\[
+\sin \theta \approx \theta
+\]
+
+Thay xấp xỉ này vào phương trình (1), ta được phương trình dao động điều hòa quen thuộc:
+\begin{equation}
+    \theta''(t) + \frac{g}{L} \theta(t) = 0
+\end{equation}
+Giải phương trình (3) giúp ta tìm được công thức chu kỳ dao động nổi tiếng:
+\begin{equation}
+    T_0 = 2\pi \sqrt{\frac{L}{g}}
+\end{equation}
+
+\subsubsubsection{Trường hợp góc lớn}
+Khi biên độ góc $\alpha$ lớn, xấp xỉ $\sin \theta \approx \theta$ không còn chính xác. Nếu giữ lại thêm các số hạng bậc cao trong chuỗi Taylor, người ta tính được công thức hiệu chỉnh chu kỳ chính xác hơn:
+\begin{equation}
+    T = T_0 \left( 1 + \frac{1}{16}\alpha^2 + \frac{11}{3072}\alpha^4 + \dots \right)
+\end{equation}
+\textit{(với $\alpha$ là biên độ góc tính bằng radian)}.
+
+\begin{note}
+\textbf{Tóm lại:} 
+\begin{itemize}
+    \item Chuỗi Taylor giúp biến đổi hàm phi tuyến $\sin \theta$ phức tạp thành xấp xỉ tuyến tính $\theta$.
+    \item Nhờ xấp xỉ này, ta giải được phương trình và rút ra công thức $T_0 = 2\pi \sqrt{\frac{L}{g}}$ ở chương trình Vật lý đại cương.
+\end{itemize}
+\subsection{Một số bài toán khác}
+Chuỗi Taylor không chỉ mang tính lý thuyết mà còn là công cụ nền tảng giúp máy tính xử lý các bài toán phức tạp trong thực tế thông qua xấp xỉ tuyến tính và đa thức.
+\subsubsection{Trí tuệ nhân tạo (AI) \& Machine Learning}
+Trong học máy, mục tiêu là tìm tham số $w$ để tối thiểu hóa hàm mất mát $L(w)$. Thuật toán tối ưu hóa Newton dùng khai triển Taylor cấp 2 quanh vị trí $w_0$:
+\begin{equation}
+    L(w) \approx L(w_0) + L'(w_0)(w - w_0) + \frac{1}{2} L''(w_0)(w - w_0)^2
+\end{equation}
+\begin{itemize}
+    \item $L'(w_0)$ (Gradient) cho biết hướng tăng/giảm của hàm số.
+    \item $L''(w_0)$ (Hessian / Độ cong) giúp thuật toán điều chỉnh bước đi chính xác và hội tụ về đáy vực (điểm cực tiểu) nhanh hơn rất nhiều so với thuật toán thông thường.
+\end{itemize}
+
+\subsubsection{Hệ thống Định vị Toàn cầu (GPS)}
+Chip GPS trên điện thoại phải giải một hệ phương trình khoảng cách phi tuyến phức tạp từ các vệ tinh để tìm tọa độ $(x, y, z)$:
+\begin{equation}
+    f(x, y, z) = d_{\text{vệ tinh}}
+\end{equation}
+Do hệ phương trình này không có công thức giải trực tiếp, thiết bị GPS áp dụng \textbf{tuyến tính hóa Taylor cấp 1}:
+\[
+f(x) \approx f(x_0) + f'(x_0)(x - x_0)
+\]
+Phép xấp xỉ này biến hệ phương trình phi tuyến thành hệ phương trình đại số tuyến tính đơn giản, giúp chip xử lý và trả về vị trí của bạn chỉ trong vài miligiây.
+
+\subsubsection{Mô phỏng Kỹ thuật \& Thiết kế Kết cấu (FEM)}
+Khi thiết kế khung xe hơi hay cầu treo, các kỹ sư cần tính lực biến dạng tại mọi điểm trên vật thể. Phương pháp Phần tử hữu hạn (FEM) chia vật thể thành hàng triệu lưới nhỏ và dùng chuỗi Taylor để liên hệ biến dạng giữa hai điểm lân cận $x$ và $x + h$:
+\begin{equation}
+    u(x + h) = u(x) + u'(x)h + \frac{u''(x)}{2!}h^2 + \dots
+\end{equation}
+Nhờ việc giữ lại các số hạng đầu của chuỗi Taylor, phần mềm máy tính (như ANSYS, SolidWorks) có thể mô phỏng và dự đoán chính xác điểm dễ bị gãy nát khi xảy ra va chạm.
+
+\subsubsection{ Tài chính Định lượng (Quản trị Rủi ro Chứng khoán)}
+Trong tài chính, giá hợp đồng quyền chọn $V$ biến đổi theo giá cổ phiếu $S$. Khai triển Taylor cấp 2 cho giá quyền chọn có dạng:
+\begin{equation}
+    \Delta V \approx V'(S) \cdot \Delta S + \frac{1}{2} V''(S) \cdot (\Delta S)^2
+\end{equation}
+Các nhà đầu tư đặt tên riêng cho hai đạo hàm này để quản trị rủi ro:
+\begin{itemize}
+    \item \textbf{Delta ($\Delta = V'$):} Đạo hàm cấp 1, đo lường mức độ thay đổi giá quyền chọn khi giá cổ phiếu nhích nhẹ.
+    \item \textbf{Gamma ($\Gamma = V''$):} Đạo hàm cấp 2, đo lường độ nhạy và tốc độ thay đổi của chính Delta.
+\end{itemize}
+
+\begin{note}
+\textbf{Tóm lại:} Điểm chung của các bài toán thực tế là biến cái phức tạp (hàm phi tuyến $f(x)$) thành cái đơn giản (đa thức Taylor $a + bx + cx^2$) để máy tính có thể giải nhanh chóng.
+\end{note}
+\section{Lời kết}
+Từ việc nghiên cứu lý thuyết đến các ứng dụng thực tiễn, có thể thấy khai triển Taylor đóng vai trò như một trong những chiếc cầu nối quan trọng và đẹp đẽ nhất của giải tích toán học. Bằng cách biến đổi các hàm số phi tuyến phức tạp thành chuỗi đa thức với các phép tính đại số cơ bản, công cụ này không chỉ giải quyết triệt để nhu cầu tính toán xấp xỉ mà còn mở ra góc nhìn sâu sắc về bản chất cục bộ của hàm số.\\
+Trong toán học thuần túy, chuỗi Taylor cung cấp nền tảng vững chắc để chứng minh các định lý về điều kiện đủ của cực trị, giúp giải quyết các bài toán chuỗi vô hạn kinh điển như bài toán Basel của Euler, hay xác định giới hạn hội tụ Cauchy trong chuyển động hành tinh của Kepler. Những kết quả này không chỉ khẳng định sức mạnh lý thuyết của giải tích mà còn đặt nền móng cho sự phát triển của lý thuyết hàm phức và giải tích số hiện đại.\\
+Không dừng lại ở khía cạnh lý thuyết, sức ảnh hưởng của khai triển Taylor còn lan tỏa mạnh mẽ sang hầu hết các lĩnh vực khoa học kỹ thuật và đời sống. Từ việc tuyến tính hóa phương trình dao động con lắc đơn trong cơ học đại cương, giải hệ phương trình định vị vệ tinh GPS trong vài miligiây, cho đến các thuật toán tối ưu hóa đa biến trong trí tuệ nhân tạo (AI) và các mô hình quản trị rủi ro tài chính; tất cả đều dựa trên nguyên lý cốt lõi của xấp xỉ Taylor.\\
+Tóm lại, việc nắm vững khai triển Taylor không chỉ giúp chúng ta giải quyết tốt các bài toán phân tích trong chương trình học, mà còn trang bị tư duy xấp xỉ số — một công cụ định hình nên cách máy tính và con người chinh phục các bài toán phức tạp trong kỷ nguyên công nghệ hiện đại.
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+
+\begin{thebibliography}{99}
+
+\bibitem{Tao}
+Terrence Tao, 
+\textit{Analysis I}, 
+4th Edition, Springer, 2022.
+
+\bibitem{Tri}
+Nguyễn Đình Trí, 
+\textit{Giáo trình toán học cao cấp}, 
+NXB Giáo dục Việt Nam, 2015.
+
+\bibitem{stewart}
+James Stewart, 
+\textit{Calculus: Early Transcendentals}, 
+9th Edition, Cengage Learning, 2020.
+
+\bibitem{rudin}
+Walter Rudin, 
+\textit{Principles of Mathematical Analysis}, 
+3rd Edition, McGraw-Hill, 1976.
+
+\bibitem{vật lí}
+Nhà xuất bản giáo dục Việt Nam, 
+\textit{Sách giáo khoa vật lí 12}.
+\end{thebibliography}
+\end{document}
